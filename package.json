@@ -6,6 +6,7 @@
     "type": "git",
     "url": "https://github.com/hiasinho/Leaflet.vector-markers.git"
   },
+  "main": "dist/Leaflet.vector-markers.js",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
