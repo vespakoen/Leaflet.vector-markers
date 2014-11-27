@@ -4,6 +4,7 @@
     L.VectorMarkers = {};
     L.VectorMarkers.version = "1.0.0";
     L.VectorMarkers.MAP_PIN = 'M16,1 C7.7146,1 1,7.65636364 1,15.8648485 C1,24.0760606 16,51 16,51 C16,51 31,24.0760606 31,15.8648485 C31,7.65636364 24.2815,1 16,1 L16,1 Z';
+
     L.VectorMarkers.Icon = L.Icon.extend({
       options: {
         iconSize: [30, 50],
@@ -17,20 +18,35 @@
         extraClasses: "",
         icon: "home",
         markerColor: "blue",
-        iconColor: "white"
+        iconColor: "white",
+        fillTop: '#4285f4',
+        fillBottom: '#3c78d8',
+        strokeWidth: 1,
+        title: ''
       },
       initialize: function(options) {
         return options = L.Util.setOptions(this, options);
       },
       createIcon: function(oldIcon) {
-        var div, icon, options, pin_path;
+        var div, icon, options, pin_path, title;
         div = (oldIcon && oldIcon.tagName === "DIV" ? oldIcon : document.createElement("div"));
         options = this.options;
         if (options.icon) {
           icon = this._createInner();
         }
+
         pin_path = L.VectorMarkers.MAP_PIN;
-        div.innerHTML = '<svg width="32px" height="52px" viewBox="0 0 32 52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' + '<path d="' + pin_path + '" fill="' + options.markerColor + '"></path>' + icon + '</svg>';
+        div.innerHTML = '<svg width="32px" height="52px" viewBox="0 0 32 52" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
+          '<path d="' + pin_path + '" stroke="#ffffff" stroke-width="' + options.strokeWidth + '" fill="url(#top-to-bottom-gradient)"></path>' +
+          '<defs>' +
+            '<linearGradient y2="1" x2="0" y1="0" x1="0" id="top-to-bottom-gradient">' +
+              '<stop offset="0" stop-opacity="1" stop-color="' + options.fillTop + '" />' +
+              '<stop offset="1" stop-opacity="1" stop-color="' + options.fillBottom + '" />' +
+            '</linearGradient>' +
+          '</defs>' +
+          icon +
+          '<span class="marker-title">' + options.title + '</span>' +
+        '</svg>';
         this._setIconStyles(div, "icon");
         this._setIconStyles(div, "icon-" + options.markerColor);
         return div;
